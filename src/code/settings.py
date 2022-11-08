@@ -4,7 +4,7 @@ HEIGTH   = 720
 FPS      = 60
 TILESIZE = 64
 HITBOX_OFFSET = {
-	'player': -26,
+	'player': 0,
 	'object': -40,
 	'grass': -10,
 	'invisible': 0}

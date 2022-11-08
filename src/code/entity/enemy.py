@@ -1,7 +1,7 @@
 import pygame
 from settings import *
-from entity import Entity
-from support import *
+from entity.entity import Entity
+from utility.support import *
 
 class Enemy(Entity):
 	def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,trigger_death_particles,add_exp):

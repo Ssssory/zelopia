@@ -1,16 +1,16 @@
 import pygame 
 from settings import *
-from tile import Tile
-from player import Player
-from debug import debug
-from support import *
+from utility.tile import Tile
+from entity.player import Player
+from utility.debug import debug
+from utility.support import *
 from random import choice, randint
-from weapon import Weapon
-from ui import UI
-from enemy import Enemy
-from particles import AnimationPlayer
-from magic import MagicPlayer
-from upgrade import Upgrade
+from utility.weapon import Weapon
+from utility.ui import UI
+from entity.enemy import Enemy
+from utility.particles import AnimationPlayer
+from utility.magic import MagicPlayer
+from utility.upgrade import Upgrade
 
 class Level:
 	def __init__(self):

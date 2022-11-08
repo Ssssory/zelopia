@@ -1,6 +1,6 @@
 import pygame, sys
 from settings import *
-from level import Level
+from levels.level import Level
 
 class Game:
 	def __init__(self):
@@ -8,15 +8,15 @@ class Game:
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
-		pygame.display.set_caption('Zelda')
+		pygame.display.set_caption('Zelopia')
 		self.clock = pygame.time.Clock()
 
 		self.level = Level()
 
 		# sound 
-		main_sound = pygame.mixer.Sound('../audio/main.ogg')
-		main_sound.set_volume(0.5)
-		main_sound.play(loops = -1)
+		# main_sound = pygame.mixer.Sound('../audio/main.ogg')
+		# main_sound.set_volume(0.5)
+		# main_sound.play(loops = -1)
 	
 	def run(self):
 		while True:
