@@ -1,0 +1,4 @@
+env
+.edea
+.vscode
+*__pycache__
