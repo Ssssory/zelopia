@@ -13,3 +13,12 @@ next
 freeze packages
 
 ``` pip freeze > requirements.txt ```
+
+## Run
+
+``` cd src/code/ ```
+
+``` python main.py ```
+
+## Edit map by
+[https://www.mapeditor.org/]Tiled
