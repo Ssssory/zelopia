@@ -2,9 +2,12 @@ import pygame
 from settings import *
 from utility.support import import_folder
 from entity.entity import Entity
+from utility.particles import AnimationPlayer
+from utility.magic import MagicPlayer
+from utility.weapon import Weapon
 
 class Player(Entity):
-	def __init__(self,pos,groups,obstacle_sprites,create_attack,destroy_attack,create_magic):
+	def __init__(self,pos,groups,obstacle_sprites):
 		super().__init__(groups)
 		self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
@@ -21,8 +24,6 @@ class Player(Entity):
 		self.obstacle_sprites = obstacle_sprites
 
 		# weapon
-		self.create_attack = create_attack
-		self.destroy_attack = destroy_attack
 		self.weapon_index = 0
 		self.weapon = list(weapon_data.keys())[self.weapon_index]
 		self.can_switch_weapon = True
@@ -30,14 +31,15 @@ class Player(Entity):
 		self.switch_duration_cooldown = 200
 
 		# magic 
-		self.create_magic = create_magic
+		self.animation_player = AnimationPlayer()
+		self.magic_player = MagicPlayer(self.animation_player)
 		self.magic_index = 0
 		self.magic = list(magic_data.keys())[self.magic_index]
 		self.can_switch_magic = True
 		self.magic_switch_time = None
 
 		# stats
-		self.stats = {'health': 100,'energy':60,'attack': 10,'magic': 4,'speed': 5}
+		self.stats = {'health': 100,'energy':60,'attack': 10,'magic': 4,'speed': 6}
 		self.max_stats = {'health': 300, 'energy': 140, 'attack': 20, 'magic' : 10, 'speed': 10}
 		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}
 		self.health = self.stats['health'] * 0.5
@@ -53,6 +55,10 @@ class Player(Entity):
 		# import a sound
 		self.weapon_attack_sound = pygame.mixer.Sound('../audio/sword.wav')
 		self.weapon_attack_sound.set_volume(0.1)
+
+		self.attack_sprites = pygame.sprite.Group()
+
+		self.current_attack = None
 
 	def import_player_assets(self):
 		character_path = '../graphics/player/'
@@ -212,3 +218,20 @@ class Player(Entity):
 		self.animate()
 		self.move(self.stats['speed'])
 		self.energy_recovery()
+
+
+	def create_magic(self,style,strength,cost):
+		if style == 'heal':
+			self.magic_player.heal(self,strength,cost,[self.groups()[0]])
+
+		if style == 'flame':
+			self.magic_player.flame(self,cost,[self.groups()[0],self.attack_sprites])
+	
+	def destroy_attack(self):
+		if self.current_attack:
+			self.current_attack.kill()
+		self.current_attack = None
+
+	def create_attack(self):
+		
+		self.current_attack = Weapon(self,[self.groups()[0],self.attack_sprites])

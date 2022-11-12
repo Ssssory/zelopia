@@ -2,9 +2,10 @@ import pygame
 from settings import *
 from entity.entity import Entity
 from utility.support import *
+from utility.particles import AnimationPlayer
 
 class Enemy(Entity):
-	def __init__(self,monster_name,pos,groups,obstacle_sprites,damage_player,trigger_death_particles,add_exp):
+	def __init__(self,monster_name,pos,groups,obstacle_sprites,visible_sprites):
 
 		# general setup
 		super().__init__(groups)
@@ -36,9 +37,6 @@ class Enemy(Entity):
 		self.can_attack = True
 		self.attack_time = None
 		self.attack_cooldown = 400
-		self.damage_player = damage_player
-		self.trigger_death_particles = trigger_death_particles
-		self.add_exp = add_exp
 
 		# invincibility timer
 		self.vulnerable = True
@@ -52,6 +50,11 @@ class Enemy(Entity):
 		self.death_sound.set_volume(0.1)
 		self.hit_sound.set_volume(0.1)
 		self.attack_sound.set_volume(0.1)
+
+		self.animation_player = AnimationPlayer()
+		self.visible_sprites = visible_sprites
+
+		self.external_player = None
 
 	def import_graphics(self,name):
 		self.animations = {'idle':[],'move':[],'attack':[]}
@@ -86,13 +89,30 @@ class Enemy(Entity):
 	def actions(self,player):
 		if self.status == 'attack':
 			self.attack_time = pygame.time.get_ticks()
-			self.damage_player(self.attack_damage,self.attack_type)
+			self.damage_player(player, self.attack_damage,self.attack_type)
 			self.attack_sound.play()
 		elif self.status == 'move':
 			self.direction = self.get_player_distance_direction(player)[1]
 		else:
 			self.direction = pygame.math.Vector2()
+		self.external_player = player
 
+
+#############
+	def damage_player(self, player, amount, attack_type):
+		if player.vulnerable:
+			player.health -= amount
+			player.vulnerable = False
+			player.hurt_time = pygame.time.get_ticks()
+			self.animation_player.create_particles(attack_type,player.rect.center,[self.visible_sprites])
+
+	def trigger_death_particles(self,pos,particle_type):
+
+		self.animation_player.create_particles(particle_type,pos,self.visible_sprites)
+
+	def add_exp(self,amount):
+		self.external_player.exp += amount
+###################
 	def animate(self):
 		animation = self.animations[self.status]
 		
