@@ -11,6 +11,7 @@ from entity.enemy import Enemy
 from utility.particles import AnimationPlayer
 from utility.magic import MagicPlayer
 from utility.upgrade import Upgrade
+from utility.level.camera import Camera
 
 class Level:
 	def __init__(self):
@@ -20,8 +21,12 @@ class Level:
 		self.game_paused = False
 
 		# sprite group setup
-		self.visible_sprites = YSortCameraGroup()
+		self.visible_sprites = Camera()
 		self.obstacle_sprites = pygame.sprite.Group()
+
+		# creating the floor
+		self.visible_sprites.floor_surf = pygame.image.load('../graphics/tilemap/ground.png').convert()
+		self.visible_sprites.floor_rect = self.visible_sprites.floor_surf.get_rect(topleft = (0,0))
 
 		# attack sprites
 		self.current_attack = None
@@ -41,10 +46,10 @@ class Level:
 
 	def create_map(self):
 		layouts = {
-			'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
-			'grass': import_csv_layout('../map/map_Grass.csv'),
-			'object': import_csv_layout('../map/map_Objects.csv'),
-			'entities': import_csv_layout('../map/map_Entities.csv')
+			'boundary': import_csv_layout('../map/level/map_FloorBlocks.csv'),
+			'grass': import_csv_layout('../map/level/map_Grass.csv'),
+			'object': import_csv_layout('../map/level/map_Objects.csv'),
+			'entities': import_csv_layout('../map/level/map_Entities.csv')
 		}
 		graphics = {
 			'grass': import_folder('../graphics/grass'),
@@ -156,36 +161,4 @@ class Level:
 			self.player_attack_logic()
 		
 
-class YSortCameraGroup(pygame.sprite.Group):
-	def __init__(self):
 
-		# general setup 
-		super().__init__()
-		self.display_surface = pygame.display.get_surface()
-		self.half_width = self.display_surface.get_size()[0] // 2
-		self.half_height = self.display_surface.get_size()[1] // 2
-		self.offset = pygame.math.Vector2()
-
-		# creating the floor
-		self.floor_surf = pygame.image.load('../graphics/tilemap/ground.png').convert()
-		self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
-
-	def custom_draw(self,player):
-
-		# getting the offset 
-		self.offset.x = player.rect.centerx - self.half_width
-		self.offset.y = player.rect.centery - self.half_height
-
-		# drawing the floor
-		floor_offset_pos = self.floor_rect.topleft - self.offset
-		self.display_surface.blit(self.floor_surf,floor_offset_pos)
-
-		# for sprite in self.sprites():
-		for sprite in sorted(self.sprites(),key = lambda sprite: sprite.rect.centery):
-			offset_pos = sprite.rect.topleft - self.offset
-			self.display_surface.blit(sprite.image,offset_pos)
-
-	def enemy_update(self,player):
-		enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite,'sprite_type') and sprite.sprite_type == 'enemy']
-		for enemy in enemy_sprites:
-			enemy.enemy_update(player)
