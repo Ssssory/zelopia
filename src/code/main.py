@@ -1,6 +1,8 @@
 import pygame, sys
 from settings import *
 from levels.level import Level
+from state import State
+from levels.arena import Arena
 
 class Game:
 	def __init__(self):
@@ -8,10 +10,13 @@ class Game:
 		# general setup
 		pygame.init()
 		self.screen = pygame.display.set_mode((WIDTH,HEIGTH))
-		pygame.display.set_caption('Zelopia')
+		pygame.display.set_caption(NAME)
 		self.clock = pygame.time.Clock()
 
-		self.level = Level()
+		state = State()
+
+		# self.level = Level()
+		self.level = Arena(state)
 
 		# sound 
 		# main_sound = pygame.mixer.Sound('../audio/main.ogg')
@@ -24,9 +29,9 @@ class Game:
 				if event.type == pygame.QUIT:
 					pygame.quit()
 					sys.exit()
-				if event.type == pygame.KEYDOWN:
-					if event.key == pygame.K_m:
-						self.level.toggle_menu()
+				# if event.type == pygame.KEYDOWN:
+				# 	if event.key == pygame.K_m:
+				# 		self.level.toggle_menu()
 
 			self.screen.fill(WATER_COLOR)
 			self.level.run()

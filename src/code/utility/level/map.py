@@ -5,12 +5,13 @@ from entity.player import Player
 from entity.enemy import Enemy
 from utility.support import *
 from random import choice, randint
+from state import State
 
 class Map:
 
     def __init__(self,groups,layouts_path) -> None:
-        self.obstacle_sprites = pygame.sprite.Group()
-        self.attackable_sprites = groups['attackable']
+        self.state = State()
+        self.attackable_sprites = self.state.getSpriteGroup('attackable')
         self.visible_sprites = groups['visible']
         self.layouts_path = layouts_path
         self.player_coordinates = (0,0)
@@ -38,19 +39,19 @@ class Map:
                     if style == 'boundary':
                         self.initBoundary(
                             (x,y),
-                            [self.obstacle_sprites]
+                            [self.state.getSpriteGroup('obstacle')]
                         )
 
                     if style == 'grass':
                         self.initGrass(
                             (x,y),
-                            [self.visible_sprites,self.obstacle_sprites,self.attackable_sprites],
+                            [self.visible_sprites,self.state.getSpriteGroup('obstacle'),self.attackable_sprites],
                         )
 
                     if style == 'object':
                         self.initObject(
                             (x,y),
-                            [self.visible_sprites,self.obstacle_sprites],
+                            [self.visible_sprites,self.state.getSpriteGroup('obstacle')],
                             int(col)
                         )
 
@@ -88,6 +89,5 @@ class Map:
                 monster_name,
                 cootdinate,
                 groups,
-                self.obstacle_sprites,
                 self.visible_sprites,
                 )

@@ -5,7 +5,7 @@ from utility.support import *
 from utility.particles import AnimationPlayer
 
 class Enemy(Entity):
-	def __init__(self,monster_name,pos,groups,obstacle_sprites,visible_sprites):
+	def __init__(self,monster_name,pos,groups,visible_sprites):
 
 		# general setup
 		super().__init__(groups)
@@ -19,7 +19,6 @@ class Enemy(Entity):
 		# movement
 		self.rect = self.image.get_rect(topleft = pos)
 		self.hitbox = self.rect.inflate(0,-10)
-		self.obstacle_sprites = obstacle_sprites
 
 		# stats
 		self.monster_name = monster_name

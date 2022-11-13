@@ -5,9 +5,10 @@ from entity.entity import Entity
 from utility.particles import AnimationPlayer
 from utility.magic import MagicPlayer
 from utility.weapon import Weapon
+from state import State
 
 class Player(Entity):
-	def __init__(self,pos,groups,obstacle_sprites):
+	def __init__(self,pos,groups):
 		super().__init__(groups)
 		self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
 		self.rect = self.image.get_rect(topleft = pos)
@@ -21,7 +22,6 @@ class Player(Entity):
 		self.attacking = False
 		self.attack_cooldown = 400
 		self.attack_time = None
-		self.obstacle_sprites = obstacle_sprites
 
 		# weapon
 		self.weapon_index = 0
@@ -56,7 +56,7 @@ class Player(Entity):
 		self.weapon_attack_sound = pygame.mixer.Sound('../audio/sword.wav')
 		self.weapon_attack_sound.set_volume(0.1)
 
-		self.attack_sprites = pygame.sprite.Group()
+		self.attack_sprites = State().getSpriteGroup('attack')
 
 		self.current_attack = None
 

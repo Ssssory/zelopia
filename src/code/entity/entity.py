@@ -1,5 +1,6 @@
 import pygame
 from math import sin
+from state import State
 
 class Entity(pygame.sprite.Sprite):
 	def __init__(self,groups):
@@ -7,6 +8,8 @@ class Entity(pygame.sprite.Sprite):
 		self.frame_index = 0
 		self.animation_speed = 0.15
 		self.direction = pygame.math.Vector2()
+
+		self.obstacle_sprites = State().getSpriteGroup('obstacle')
 
 	def move(self,speed):
 		if self.direction.magnitude() != 0:
