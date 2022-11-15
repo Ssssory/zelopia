@@ -3,6 +3,7 @@ from entity.player import Player
 from utility.level.camera import Camera
 from utility.level.map import Map
 from state import State
+from utility.ui import UI
 
 from random import choice, randint
 
@@ -36,6 +37,9 @@ class Arena:
             [map.visible_sprites]
             )
 
+        # user interface 
+        self.ui = UI()
+
     def player_attack_logic(self):
         if self.attack_sprites:
             for attack_sprite in self.attack_sprites:
@@ -53,6 +57,7 @@ class Arena:
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)
+        self.ui.display(self.player)
 		
         if not self.game_paused:
             self.visible_sprites.update()
