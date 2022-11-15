@@ -4,6 +4,7 @@ from levels.level import Level
 from state import State
 from levels.arena import Arena
 
+PLAYER = pygame.USEREVENT + 1 
 class Game:
 	def __init__(self):
 
@@ -32,6 +33,15 @@ class Game:
 				# if event.type == pygame.KEYDOWN:
 				# 	if event.key == pygame.K_m:
 				# 		self.level.toggle_menu()
+
+				if event.type == PLAYER:
+					self.font = pygame.font.Font(UI_FONT,80)
+					text = self.font.render("Game Over", 1, 'Red')
+					self.screen.blit(text,(300,300))
+					pygame.display.update()
+					pygame.time.delay(1000)
+					pygame.quit()
+					break
 
 			self.screen.fill(WATER_COLOR)
 			self.level.run()

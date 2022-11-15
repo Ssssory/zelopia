@@ -44,7 +44,7 @@ class Player(Entity):
 		self.upgrade_cost = {'health': 100, 'energy': 100, 'attack': 100, 'magic' : 100, 'speed': 100}
 		self.health = self.stats['health'] * 0.5
 		self.energy = self.stats['energy'] * 0.8
-		self.exp = 5000
+		self.exp = 0
 		self.speed = self.stats['speed']
 
 		# damage timer
@@ -235,3 +235,8 @@ class Player(Entity):
 	def create_attack(self):
 		
 		self.current_attack = Weapon(self,[self.groups()[0],self.attack_sprites])
+
+	def deth(self):
+		PLAYER_INT = pygame.USEREVENT + 1 
+		PLAYER = pygame.event.Event(PLAYER_INT)
+		pygame.event.post(PLAYER)

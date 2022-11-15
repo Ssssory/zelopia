@@ -101,9 +101,12 @@ class Enemy(Entity):
 	def damage_player(self, player, amount, attack_type):
 		if player.vulnerable:
 			player.health -= amount
-			player.vulnerable = False
-			player.hurt_time = pygame.time.get_ticks()
-			self.animation_player.create_particles(attack_type,player.rect.center,[self.visible_sprites])
+			if player.health >= 0: 
+				player.vulnerable = False
+				player.hurt_time = pygame.time.get_ticks()
+				self.animation_player.create_particles(attack_type,player.rect.center,[self.visible_sprites])
+			else:
+				player.deth()
 
 	def trigger_death_particles(self,pos,particle_type):
 
