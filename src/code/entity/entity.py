@@ -25,6 +25,7 @@ class Entity(pygame.sprite.Sprite):
 		if direction == 'horizontal':
 			for sprite in self.obstacle_sprites:
 				if sprite.hitbox.colliderect(self.hitbox):
+					self.sliding(self,sprite, direction)
 					if self.direction.x > 0: # moving right
 						self.hitbox.right = sprite.hitbox.left
 					if self.direction.x < 0: # moving left
@@ -32,11 +33,31 @@ class Entity(pygame.sprite.Sprite):
 
 		if direction == 'vertical':
 			for sprite in self.obstacle_sprites:
-				if sprite.hitbox.colliderect(self.hitbox):
+				if sprite.hitbox.colliderect(self.hitbox):					
+					self.sliding(self,sprite, direction)
 					if self.direction.y > 0: # moving down
 						self.hitbox.bottom = sprite.hitbox.top
 					if self.direction.y < 0: # moving up
 						self.hitbox.top = sprite.hitbox.bottom
+
+	def sliding(self, object, subject, direction):
+		pass
+		# TODO: fix bug with coordinates
+		# if direction == 'vertical':
+		# 	if subject.hitbox.center[0] > object.hitbox.center[0]:
+		# 		object.direction.x = -1
+		# 		object.hitbox.x += object.direction.x * 1
+		# 	else:
+		# 		object.direction.x = 1
+		# 		object.hitbox.x += object.direction.x * 1
+		# else:
+		# 	if subject.hitbox.center[1] > object.hitbox.center[1]:
+		# 		object.direction.y = -1
+		# 		object.hitbox.y += object.direction.y * 1
+		# 	else:
+		# 		object.direction.y = 1
+		# 		object.hitbox.y += object.direction.y * 1
+
 
 	def wave_value(self):
 		value = sin(pygame.time.get_ticks())
