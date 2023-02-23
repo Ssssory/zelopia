@@ -21,4 +21,7 @@ freeze packages
 ``` python main.py ```
 
 ## Edit map by
-[Tiled](https://www.mapeditor.org/)  [Instruction](https://www.youtube.com/watch?v=wJMDh9QGRgs)
+[Tiled](https://www.mapeditor.org/) 
+
+## Watch this!
+ [Instruction](https://www.youtube.com/watch?v=wJMDh9QGRgs)
