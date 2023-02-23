@@ -1,6 +1,4 @@
 [ ] fix path of all resouces
-[ ] extract Map class (damage in another class)
-[ ] helth drop sub zero
 [ ] player deth 
 [ ] main menu
 [ ] network
